@@ -25,6 +25,8 @@ class CounterCubit extends Cubit<int> {
   //! jika tidak mau 0, kita juga bisa set initialData, dengan melemparnya di dalam constructor
   // CounterCubit({this.initialData = 0}) : super(initialData); //! ganti constructor diatas dengan yang ada di bawah
   // int initialData;
+  int? current;
+  int? next;
 
   void addData() {
     emit(state + 1);
@@ -32,6 +34,18 @@ class CounterCubit extends Cubit<int> {
 
   void minusData() {
     emit(state - 1);
+  }
+
+  //! kelebihan menggunakan Cubit atau Bloc, kita bisa melakukan observer terhadap kelas tersebut
+  //! -perubahan(onChange)
+  //! -error (onError) dll
+
+  @override
+  void onChange(Change<int> change) {
+    super.onChange(change);
+    print(change);
+    current = change.currentState;
+    next = change.nextState;
   }
 }
 
@@ -52,24 +66,26 @@ class HomePage extends StatelessWidget {
         children: [
           StreamBuilder(
               //! jika tidak mau menggunakan if == ConnectionState.waiting gunakan initial data
-              // initialData: mycounter.initialData,
+              initialData: 0,
               stream: mycounter.stream,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: Text(
-                      'Loading',
-                      style: TextStyle(fontSize: 50),
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Text(
-                      '${snapshot.data}',
-                      style: TextStyle(fontSize: 50),
-                    ),
-                  );
-                }
+                return Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        '${snapshot.data}',
+                        style: TextStyle(fontSize: 50),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '${mycounter.current}',
+                        style: TextStyle(fontSize: 50),
+                      ),
+                    ],
+                  ),
+                );
               }),
           const SizedBox(
             height: 20,
