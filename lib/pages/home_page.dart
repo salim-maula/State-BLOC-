@@ -16,8 +16,21 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocListener(
+          BlocConsumer<Counter, int>(
             bloc: mycounter,
+            builder: (context, state) {
+              return Text(
+                "$state",
+                style: const TextStyle(fontSize: 50),
+              );
+            },
+            buildWhen: (previous, current) {
+              if (current == 10) {
+                return true;
+              } else {
+                return false;
+              }
+            },
             listener: (context, state) {
               //....
               ScaffoldMessenger.of(context).showSnackBar(
@@ -33,15 +46,6 @@ class HomePage extends StatelessWidget {
                 return false;
               }
             },
-            child: BlocBuilder<Counter, int>(
-              bloc: mycounter,
-              builder: (context, state) {
-                return Text(
-                  "$state",
-                  style: TextStyle(fontSize: 50),
-                );
-              },
-            ),
           ),
           const SizedBox(
             height: 20,
