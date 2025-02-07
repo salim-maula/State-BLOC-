@@ -11,38 +11,38 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bloc Builder"),
+        title: const Text("Bloc Listener"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<Counter, int>(
+          BlocListener(
             bloc: mycounter,
-            buildWhen: (prev, current) {
-              if (current <= -1 && prev <= 0) {
-                return false;
-              } else {
-                return true;
-              }
-              // return true;
-            },
-            builder: (context, state) {
-              return Text(
-                "$state",
-                style: TextStyle(fontSize: 50),
+            listener: (context, state) {
+              //....
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("SUDAH MENCAPAI 15"),
+                ),
               );
             },
+            listenWhen: (previous, current) {
+              if (current == 15) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+            child: BlocBuilder<Counter, int>(
+              bloc: mycounter,
+              builder: (context, state) {
+                return Text(
+                  "$state",
+                  style: TextStyle(fontSize: 50),
+                );
+              },
+            ),
           ),
-          //! selain menggunakan StreamBuilder kita bisa menggunakan widget bawaannya dari package BLOC
-          // StreamBuilder(
-          //     initialData: 0,
-          //     stream: mycounter.stream,
-          //     builder: (context, snapshot) {
-          //       return Text(
-          //         "${snapshot.data}",
-          //         style: TextStyle(fontSize: 50),
-          //       );
-          //     }),
           const SizedBox(
             height: 20,
           ),
