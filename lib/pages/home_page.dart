@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_bloc/bloc/counter.dart';
+import 'package:state_bloc/other/other.dart';
 import 'package:state_bloc/pages/data_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -66,6 +67,28 @@ class HomePage extends StatelessWidget {
             ],
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            // MaterialPageRoute(
+            //   builder: (context) => BlocProvider(
+            //     create: (context) => mycounter,
+            //     child: OtherPage(),
+            //   ),
+            // ),
+
+            //! jika kita mau menginjek kehalaman berikutnya jgn gunakan cara di atas
+            //! gunakana BlocProvider.value
+            MaterialPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: mycounter,
+                child: OtherPage(),
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.arrow_forward),
       ),
     );
   }
