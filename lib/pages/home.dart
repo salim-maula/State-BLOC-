@@ -5,6 +5,7 @@ import 'package:state_bloc/bloc/counter_event.dart';
 
 class HomePage extends StatelessWidget {
   final CounterBloc counterB = CounterBloc();
+  int value = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +17,11 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            BlocBuilder(
+            BlocBuilder<CounterBloc, int>(
                 bloc: counterB,
                 builder: (context, state) {
                   return Text(
-                    '${state}',
+                    '$state',
                     style: const TextStyle(fontSize: 100),
                   );
                 }),
@@ -29,13 +30,13 @@ class HomePage extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    counterB.add(CounterEvent.decrement);
+                    counterB.add(DecrementCounter(value));
                   },
                   icon: Icon(Icons.remove),
                 ),
                 IconButton(
                   onPressed: () {
-                     counterB.add(CounterEvent.increment);
+                    counterB.add(IncrementCounter(value));
                   },
                   icon: Icon(Icons.add),
                 ),

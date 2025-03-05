@@ -8,15 +8,13 @@ import 'package:state_bloc/bloc/counter_event.dart';
 //   void remove() => emit(state - 1);
 // }
 
-
 class CounterBloc extends Bloc<CounterEvent, int> {
   CounterBloc() : super(0) {
-    on<CounterEvent>((event, emit) {
-      if (event == CounterEvent.decrement) {
-        emit(state - 1);
-      } else {
-        emit(state + 1);
-      }
+    on<DecrementCounter>((event, emit) {
+      emit((state - 1) * event.value);
+    });
+    on<IncrementCounter>((event, emit) {
+      emit((state + 1) * event.value);
     });
   }
 }
